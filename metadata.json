@@ -1,0 +1,6 @@
+{
+  "name": "SHE오스크",
+  "description": "공장 내 이동형 SHE오스크의 실시간 위치 및 사용 상태 관리 모바일 웹앱",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

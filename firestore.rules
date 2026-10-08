@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 공장 SHE오스크 컬렉션 보안 규칙
+    match /sheosk/{sheoskId} {
+      allow read: if true;
+      allow create: if request.resource.data.managementNumber is string
+                    && request.resource.data.location is string
+                    && request.resource.data.usageStatus in ['사용중', '미사용', '점검중'];
+      allow update: if request.resource.data.location is string
+                    && request.resource.data.usageStatus in ['사용중', '미사용', '점검중']
+                    // 관리번호는 최초 등록 후 수정 불가 보장
+                    && request.resource.data.managementNumber == resource.data.managementNumber;
+      allow delete: if true;
+
+      // 하위 history 컬렉션
+      match /history/{historyId} {
+        allow read, write: if true;
+      }
+    }
+
+    // 글로벌 이동이력 컬렉션
+    match /sheosk_history/{historyId} {
+      allow read, write: if true;
+    }
+  }
+}

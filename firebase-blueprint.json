@@ -1,0 +1,51 @@
+{
+  "entities": {
+    "sheosk": {
+      "title": "SHE오스크",
+      "description": "공장 내 이동형 SHE오스크 기기 정보",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "고유 식별자" },
+        "managementNumber": { "type": "string", "description": "고유 관리번호 (SHE-001 등, 수정 불가)", "maxLength": 30 },
+        "location": { "type": "string", "description": "현재 위치", "maxLength": 100 },
+        "usageStatus": { "type": "string", "enum": ["사용중", "미사용", "점검중"], "description": "사용 여부" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string", "maxLength": 50 },
+        "notes": { "type": "string", "maxLength": 200 }
+      },
+      "required": ["managementNumber", "location", "usageStatus"]
+    },
+    "history": {
+      "title": "SHE오스크 이동이력",
+      "description": "SHE오스크 위치 및 상태 변경 이력",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sheoskId": { "type": "string" },
+        "managementNumber": { "type": "string", "maxLength": 30 },
+        "previousLocation": { "type": "string", "maxLength": 100 },
+        "newLocation": { "type": "string", "maxLength": 100 },
+        "previousStatus": { "type": "string", "enum": ["사용중", "미사용", "점검중"] },
+        "newStatus": { "type": "string", "enum": ["사용중", "미사용", "점검중"] },
+        "changedAt": { "type": "string", "format": "date-time" },
+        "changedBy": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["managementNumber", "previousLocation", "newLocation", "newStatus"]
+    }
+  },
+  "firestore": {
+    "/sheosk/{sheoskId}": {
+      "schema": "sheosk",
+      "description": "공장 SHE오스크 목록"
+    },
+    "/sheosk/{sheoskId}/history/{historyId}": {
+      "schema": "history",
+      "description": "개별 SHE오스크의 이동 및 상태 변경 이력"
+    },
+    "/sheosk_history/{historyId}": {
+      "schema": "history",
+      "description": "공장 전체 SHE오스크 이동 이력 타임라인"
+    }
+  }
+}
