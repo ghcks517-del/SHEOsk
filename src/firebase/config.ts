@@ -1,9 +1,11 @@
 /**
  * Firebase 설정 파일
  * 
- * 실제 Firebase 프로젝트 정보가 있는 경우 아래 firebaseConfig 객체에 입력하거나,
- * 앱 내 [관리 > Firebase 연동 설정] 메뉴에서 브라우저 상으로 즉시 저장할 수 있습니다.
+ * Google AI Studio에서 프로비저닝된 프로젝트 설정(firebase-applet-config.json)을 기본 로드하며,
+ * 커스텀 설정이 필요한 경우 로컬스토리지 또는 직접 지정할 수 있습니다.
  */
+
+import appletConfig from '../../firebase-applet-config.json';
 
 export interface FirebaseAppConfig {
   apiKey: string;
@@ -15,18 +17,17 @@ export interface FirebaseAppConfig {
   firestoreDatabaseId?: string;
 }
 
-// 기본 설정값 (사용자 입력용 템플릿)
+// 프로비저닝된 기본 설정값
 export const firebaseConfig: FirebaseAppConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
-  firestoreDatabaseId: "(default)"
+  apiKey: appletConfig.apiKey || "",
+  authDomain: appletConfig.authDomain || "",
+  projectId: appletConfig.projectId || "",
+  storageBucket: appletConfig.storageBucket || "",
+  messagingSenderId: appletConfig.messagingSenderId || "",
+  appId: appletConfig.appId || "",
+  firestoreDatabaseId: appletConfig.firestoreDatabaseId || "(default)"
 };
 
-// 로컬 스토리지에 저장된 사용자 정의 Firebase 설정이 있는지 확인
 const STORAGE_KEY = 'sheosk_firebase_config';
 
 export function getActiveFirebaseConfig(): FirebaseAppConfig {

@@ -168,6 +168,11 @@ class SheoskDataService {
         const unsubscribe = onSnapshot(
           q,
           (snapshot) => {
+            if (snapshot.empty) {
+              console.log('[Firestore] Fresh database detected, seeding initial kiosks...');
+              this.seedToFirestore().catch(e => console.warn('Auto seed error:', e));
+              return;
+            }
             const list: Sheosk[] = [];
             snapshot.forEach((docSnap) => {
               const data = docSnap.data();
